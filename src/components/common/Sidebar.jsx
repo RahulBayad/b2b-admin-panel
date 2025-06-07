@@ -1,14 +1,4 @@
-// components/Sidebar.jsx
 import React, { useState } from "react";
-import {
-  AppBar,
-  Avatar,
-  Button,
-  useTheme,
-  Paper,
-  ListItemButton,
-} from "@mui/material";
-
 import {
   Box as BoxIcon,
   List as ListIcon,
@@ -20,13 +10,9 @@ import {
   MonitorCog,
   Gauge,
 } from "lucide-react";
+import { Button, Drawer, ListItemButton, Paper } from "@mui/material";
 import { NavLink } from "react-router";
-
-const drawerWidth = 260;
-
-const Header = () => {
-  const theme = useTheme();
-
+const Sidebar = () => {
   const navMenu = [
     {
       title: "Dashboard",
@@ -142,22 +128,49 @@ const Header = () => {
     },
   ];
 
-  return (
-    <div className="">
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: "none",
-          border: "none",
-          padding: "10px",
-        }}
-      >
-        <Avatar src="/vite.svg" />
-      </AppBar>
-      
-    </div>
-  );
-};
+  const SidebarItem = ({ title, url, icon, subMenu})=>{
 
-export default Header;
+    const [subMenuOpen, setSubMenuOpen] = useState(false)
+    const toggleSubMenu = ()=> setSubMenuOpen(prev => !prev)
+    const Icon = icon
+    return (
+        <div className="">
+            {
+                !subMenu ? 
+                <NavLink to={url ? url : "#"} >
+                    <Button sx={{fontSize: 12}} startIcon={Icon ? <Icon size={16}/> : ""}>{title}</Button></NavLink> 
+                : <Button
+                   
+                    sx={{ color: "sidebar.foreground" ,textAlign: "left", justifyContent: "start", fontSize: 12, width: "100%", borderRadius: 0, pl:2}}
+                    startIcon={<Icon size={16}/>} 
+                    onClick={()=>toggleSubMenu()}
+                >{title}</Button>
+            }
+            {
+                
+                <div className={`flex flex-col duration-200 ease-linear transition-all overflow-hidden ${subMenuOpen ? "max-h-96" : "max-h-0"}`}>
+                    {
+                        subMenu.map((item)=>{
+                            return <NavLink to={url+item.url} >  
+                                <Button sx={{textAlign: "left", justifyContent: "start", fontSize: 12, width: "100%", borderRadius: 0, pl:2}}>{item.title}</Button>
+                            </NavLink>
+                        })
+                    }
+                </div>
+            }
+        </div>
+    )
+  }
+
+  return (
+    <div className="bg-[#00041b]  text-sm w-[180px] h-[90%] overflow-y-auto overflow-x-hidden shadow-xl">
+        {navMenu.map((nav, index) => (
+          <div key={index} className="">
+            <SidebarItem url={nav.url} title={nav.title} icon={nav.icon} subMenu={nav.items}/>
+          </div>
+        ))}
+    </div>
+  )
+};
+ 
+export default Sidebar;

@@ -22,7 +22,11 @@ const theme = createTheme({
       primary: '#1e293b',    // Main text: dark slate gray
       secondary: '#64748b',  // Light gray text
     },
-    divider: '#e2e8f0', // Light gray divider
+    divider: '#e2e8f0', // Light gray divider,
+    sidebar : {
+      background : "#00041b",
+      foreground : "white",
+    }
   },
 
   typography: {
