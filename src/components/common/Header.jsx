@@ -151,6 +151,7 @@ const Header = () => {
           boxShadow: "none",
           border: "none",
           padding: "10px",
+          borderRadius : 0
         }}
       >
         <Avatar src="/vite.svg" />

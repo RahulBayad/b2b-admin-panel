@@ -130,7 +130,7 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
         rows={rows.slice(page * pageSize, (page + 1) * pageSize)}
         pageSize={pageSize}
         checkboxSelection
-        sx={{ border: 0, width: "100%", backgroundColor: "inherit" }}
+        sx={{ border: 0, width: "100%", backgroundColor: "inherit", fontSize: 13 }}
         // disableColumnMenu
         disableColumnSorting
         hideFooterPagination

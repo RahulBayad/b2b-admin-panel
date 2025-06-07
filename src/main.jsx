@@ -30,7 +30,8 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+    // fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: '"Roboto", sans-serif',
     button: {
       textTransform: 'none',
       fontWeight: 500,

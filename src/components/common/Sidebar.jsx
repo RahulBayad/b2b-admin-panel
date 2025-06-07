@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button, Drawer, ListItemButton, Paper } from "@mui/material";
 import { NavLink } from "react-router";
+
 const Sidebar = () => {
   const navMenu = [
     {
@@ -128,49 +129,89 @@ const Sidebar = () => {
     },
   ];
 
-  const SidebarItem = ({ title, url, icon, subMenu})=>{
-
-    const [subMenuOpen, setSubMenuOpen] = useState(false)
-    const toggleSubMenu = ()=> setSubMenuOpen(prev => !prev)
-    const Icon = icon
+  const SidebarItem = ({ title, url, icon : Icon, subMenu }) => {
+    const [subMenuOpen, setSubMenuOpen] = useState(false);
+    const toggleSubMenu = () => setSubMenuOpen((prev) => !prev);
     return (
-        <div className="">
-            {
-                !subMenu ? 
-                <NavLink to={url ? url : "#"} >
-                    <Button sx={{fontSize: 12}} startIcon={Icon ? <Icon size={16}/> : ""}>{title}</Button></NavLink> 
-                : <Button
-                   
-                    sx={{ color: "sidebar.foreground" ,textAlign: "left", justifyContent: "start", fontSize: 12, width: "100%", borderRadius: 0, pl:2}}
-                    startIcon={<Icon size={16}/>} 
-                    onClick={()=>toggleSubMenu()}
-                >{title}</Button>
-            }
-            {
-                
-                <div className={`flex flex-col duration-200 ease-linear transition-all overflow-hidden ${subMenuOpen ? "max-h-96" : "max-h-0"}`}>
-                    {
-                        subMenu.map((item)=>{
-                            return <NavLink to={url+item.url} >  
-                                <Button sx={{textAlign: "left", justifyContent: "start", fontSize: 12, width: "100%", borderRadius: 0, pl:2}}>{item.title}</Button>
-                            </NavLink>
-                        })
-                    }
-                </div>
-            }
-        </div>
-    )
-  }
+      <div>
+        {!subMenu ? (
+          <NavLink to={url ? url : "#"}>
+            <Button
+              sx={{ fontSize: 12 }}
+              startIcon={Icon ? <Icon size={16} /> : ""}
+            >
+              {title}
+            </Button>
+          </NavLink>
+        ) : (
+          <Button
+            className="bg-[#000988]"
+            sx={{
+              color: "sidebar.foreground",
+              textAlign: "left",
+              justifyContent: "start",
+              fontSize: 12,
+              width: "100%",
+              borderRadius: 0,
+              pl: 2,
+              ":hover": {
+                // backgroundColor: "#000988",
+                  
+              },
+            }}
+            startIcon={<Icon size={16} />}
+            onClick={() => toggleSubMenu()}
+          >
+            {title}
+          </Button>
+        )}
+        {
+          <div
+            className={`flex flex-col duration-200 ease-linear transition-all overflow-hidden ${
+              subMenuOpen ? "max-h-96" : "max-h-0"
+            }`}
+          >
+            {subMenu.map((item) => {
+              return (
+                <NavLink to={url + item.url} className="hover:bg-blue-500">
+                  <Button
+                    sx={{
+                      textAlign: "left",
+                      justifyContent: "start",
+                      fontSize: 12,
+                      width: "100%",
+                      borderRadius: 0,
+                      pl: 2,
+                    }}
+                  >
+                    {item.title}
+                  </Button>
+                </NavLink>
+              );
+            })}
+          </div>
+        }
+      </div>
+    );
+  };
 
   return (
-    <div className="bg-[#00041b]  text-sm w-[180px] h-[90%] overflow-y-auto overflow-x-hidden shadow-xl">
-        {navMenu.map((nav, index) => (
-          <div key={index} className="">
-            <SidebarItem url={nav.url} title={nav.title} icon={nav.icon} subMenu={nav.items}/>
-          </div>
-        ))}
+    <div className="bg-[#00041b]  text-sm min-w-[180px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
+      <figure className="px-3 py-2">
+        <img src="/vite.svg" className="w-full h-16" />
+      </figure>
+      {navMenu.map((nav, index) => (
+        <div key={index} className="">
+          <SidebarItem
+            url={nav.url}
+            title={nav.title}
+            icon={nav.icon}
+            subMenu={nav.items}
+          />
+        </div>
+      ))}
     </div>
-  )
+  );
 };
- 
+
 export default Sidebar;

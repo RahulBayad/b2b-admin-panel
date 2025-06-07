@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable } from "../../../components/ui/DataTable";
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import { countries } from "../../../countries";
 
 const Countries = () => {
@@ -25,7 +25,7 @@ const Countries = () => {
             variant="square"
             src={params.value}
             alt="flag"
-            sx={{ width: 32, height: 24 }}
+            sx={{ width: 30, height: 22}}
           />
         </Box>
       ),
@@ -42,6 +42,12 @@ const Countries = () => {
 
   return (
     <div>
+      <Typography 
+        variant="h5" 
+        fontWeight={600} 
+      >
+        Countries
+      </Typography>
       <DataTable  columns={columns} data={data} showExport showFilter showImport/>
     </div>
   );
