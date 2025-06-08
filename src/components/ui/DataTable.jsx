@@ -1,4 +1,11 @@
-import { ColumnsPanelTrigger, DataGrid, GridViewColumnIcon, Toolbar, ToolbarButton, useGridApiContext } from "@mui/x-data-grid";
+import {
+  ColumnsPanelTrigger,
+  DataGrid,
+  GridViewColumnIcon,
+  Toolbar,
+  ToolbarButton,
+  useGridApiContext,
+} from "@mui/x-data-grid";
 import { countries } from "../../countries";
 import {
   Avatar,
@@ -14,9 +21,25 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Download, ListFilter, Printer, RefreshCcw, Search } from "lucide-react";
+import {
+  Download,
+  ListFilter,
+  Printer,
+  RefreshCcw,
+  Search,
+} from "lucide-react";
 
-export const DataTable = ({ data: rows, columns, showToolbar = true, showExport, showImport, showFilter  }) => {
+export const DataTable = ({
+  data: rows,
+  columns,
+  rowSelection = false,
+  showToolbar = true,
+  showExport,
+  showImport,
+  showFilter,
+  hideFooter = false,
+  showPagination = true,
+}) => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
@@ -36,7 +59,7 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
       apiRef.current.exportDataAsCsv(); // you can also use exportDataAsPrint()
     };
     return (
-      <Toolbar sx={{pb:2 }}>
+      <Toolbar sx={{ pb: 2 }}>
         <OutlinedInput
           size="small"
           fullWidth
@@ -46,11 +69,11 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
         <div>
           <Button
             title="Reload Table Data"
-            size="medium"         
+            size="medium"
             sx={{
-              borderRadius : "9999px",
+              borderRadius: "9999px",
               width: "40px",
-              height: "40px", 
+              height: "40px",
               minWidth: "auto",
               padding: "0px",
             }}
@@ -63,14 +86,13 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
             <GridViewColumnIcon fontSize="small" />
           </ColumnsPanelTrigger>
         </div>
-        {
-          showFilter && 
+        {showFilter && (
           <div>
             <Button
               title="Filter"
               size="medium"
               sx={{
-                borderRadius : "9999px",
+                borderRadius: "9999px",
                 width: "40px",
                 height: "40px",
                 minWidth: "auto",
@@ -80,15 +102,14 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
               <ListFilter className="!w-4 !h-4 p-0" />
             </Button>
           </div>
-        }
-        {
-          showImport &&
+        )}
+        {showImport && (
           <div>
             <Button
               title="Import"
               size="medium"
               sx={{
-                borderRadius : "9999px",
+                borderRadius: "9999px",
                 width: "40px",
                 height: "40px",
                 minWidth: "auto",
@@ -98,15 +119,14 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
               <Download size={16} />
             </Button>
           </div>
-        }
-        {
-          showExport && 
+        )}
+        {showExport && (
           <div>
             <Button
               title="Export"
               size="medium"
               sx={{
-                borderRadius : "9999px",
+                borderRadius: "9999px",
                 width: "40px",
                 height: "40px",
                 minWidth: "auto",
@@ -117,49 +137,61 @@ export const DataTable = ({ data: rows, columns, showToolbar = true, showExport,
               <Printer size={16} />
             </Button>
           </div>
-        }
+        )}
       </Toolbar>
     );
   };
 
   return (
-    <Paper sx={{ p:1 }}>
+    <Paper sx={{ p: 1 }}>
       <DataGrid
         slots={{ toolbar: MyToolbar }}
         columns={columns}
         rows={rows.slice(page * pageSize, (page + 1) * pageSize)}
         pageSize={pageSize}
-        checkboxSelection
-        sx={{ border: 0, width: "100%", backgroundColor: "inherit", fontSize: 13 }}
+        checkboxSelection={rowSelection}
+        sx={{
+          border: 0,
+          width: "100%",
+          backgroundColor: "inherit",
+          fontSize: 13,
+        }}
         // disableColumnMenu
         disableColumnSorting
         hideFooterPagination
         showToolbar={showToolbar}
+        hideFooter={hideFooter}
       />
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        mt={0}
-        spacing={2}
-      >
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography>Rows per page:</Typography>
-          <Select value={pageSize} onChange={handlePageSizeChange} size="small">
-            {[5, 10, 25, 50, 100].map((size) => (
-              <MenuItem key={size} value={size}>
-                {size}
-              </MenuItem>
-            ))}
-          </Select>
+      {showPagination && (
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          mt={0}
+          spacing={2}
+        >
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography>Rows per page:</Typography>
+            <Select
+              value={pageSize}
+              onChange={handlePageSizeChange}
+              size="small"
+            >
+              {[5, 10, 25, 50, 100].map((size) => (
+                <MenuItem key={size} value={size}>
+                  {size}
+                </MenuItem>
+              ))}
+            </Select>
+          </Stack>
+          <Pagination
+            count={totalPages}
+            page={page + 1}
+            onChange={handlePageChange}
+            shape="rounded"
+          />
         </Stack>
-        <Pagination
-          count={totalPages}
-          page={page + 1}
-          onChange={handlePageChange}
-          shape="rounded"
-        />
-      </Stack>
+      )}
     </Paper>
   );
 };

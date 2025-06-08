@@ -9,6 +9,7 @@ import {
   Settings,
   MonitorCog,
   Gauge,
+  Dot,
 } from "lucide-react";
 import { Button, Drawer, ListItemButton, Paper } from "@mui/material";
 import { NavLink } from "react-router";
@@ -17,13 +18,13 @@ const Sidebar = () => {
   const navMenu = [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/",
       icon: Gauge,
-      items: [
-        { title: "Dashboard Home", url: "/dashboard" },
-        { title: "Analytics / Reports", url: "/analytics-reports" },
-        { title: "Trends", url: "/trends" },
-      ],
+      // items: [
+      //   { title: "Dashboard Home", url: "/" },
+      //   { title: "Analytics / Reports", url: "/analytics-reports" },
+      //   { title: "Trends", url: "/trends" },
+      // ],
     },
     {
       title: "Business",
@@ -129,7 +130,7 @@ const Sidebar = () => {
     },
   ];
 
-  const SidebarItem = ({ title, url, icon : Icon, subMenu }) => {
+  const SidebarItem = ({ title, url, icon: Icon, subMenu }) => {
     const [subMenuOpen, setSubMenuOpen] = useState(false);
     const toggleSubMenu = () => setSubMenuOpen((prev) => !prev);
     return (
@@ -137,7 +138,18 @@ const Sidebar = () => {
         {!subMenu ? (
           <NavLink to={url ? url : "#"}>
             <Button
-              sx={{ fontSize: 12 }}
+              sx={{
+              color: "sidebar.foreground",
+              textAlign: "left",
+              justifyContent: "start",
+              fontSize: 12,
+              width: "100%",
+              borderRadius: 0,
+              pl: 2,
+              ":hover": {
+                background: "linear-gradient(to right,  blue, violet)",
+              },
+            }}
               startIcon={Icon ? <Icon size={16} /> : ""}
             >
               {title}
@@ -155,8 +167,7 @@ const Sidebar = () => {
               borderRadius: 0,
               pl: 2,
               ":hover": {
-                // backgroundColor: "#000988",
-                  
+                background: "linear-gradient(to right,  blue, violet)",
               },
             }}
             startIcon={<Icon size={16} />}
@@ -165,7 +176,7 @@ const Sidebar = () => {
             {title}
           </Button>
         )}
-        {
+        { subMenu && 
           <div
             className={`flex flex-col duration-200 ease-linear transition-all overflow-hidden ${
               subMenuOpen ? "max-h-96" : "max-h-0"
@@ -173,15 +184,20 @@ const Sidebar = () => {
           >
             {subMenu.map((item) => {
               return (
-                <NavLink to={url + item.url} className="hover:bg-blue-500">
+                <NavLink to={url + item.url} className="">
                   <Button
+                    startIcon={<Dot/>}
                     sx={{
                       textAlign: "left",
                       justifyContent: "start",
                       fontSize: 12,
                       width: "100%",
                       borderRadius: 0,
-                      pl: 2,
+                      pl: 1,
+                      color: "white",
+                      ":hover": {
+                        background: "linear-gradient(to right,  blue, violet)",
+                      },
                     }}
                   >
                     {item.title}
@@ -196,7 +212,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#00041b]  text-sm min-w-[180px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
+    <div className="bg-[#00041b]  text-sm min-w-[200px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
       <figure className="px-3 py-2">
         <img src="/vite.svg" className="w-full h-16" />
       </figure>

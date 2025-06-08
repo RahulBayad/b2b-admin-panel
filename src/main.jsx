@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { barElementClasses, pieArcLabelClasses } from '@mui/x-charts';
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,6 @@ const theme = createTheme({
 
   typography: {
     // fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
-    fontFamily: '"Roboto", sans-serif',
     button: {
       textTransform: 'none',
       fontWeight: 500,
@@ -96,6 +96,45 @@ const theme = createTheme({
       },
     },
   },
+  MuiChart: {
+      styleOverrides: {
+        root: {
+          fontFamily: '"Inter", "Roboto", sans-serif',
+        },
+      },
+    },
+    MuiBarChart: {
+      styleOverrides: {
+        root: {
+          [`& .${barElementClasses.root}`]: {
+            fillOpacity: 0.9,
+            stroke: '#ffffff',
+            strokeWidth: 1,
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              fillOpacity: 1,
+              transform: 'scale(1.02)',
+            },
+          },
+        },
+      },
+    },
+    MuiPieChart: {
+      styleOverrides: {
+        root: {
+          [`& .${pieArcLabelClasses.root}`]: {
+            fill: '#ffffff',
+            fontWeight: 'bold',
+            fontSize: '12px',
+            textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+          },
+          '& .MuiChartsLegend-root': {
+            fontSize: '0.875rem',
+            color: '#1f2a44',
+          },
+        },
+      },
+    },
 });
 
 createRoot(document.getElementById('root')).render(
