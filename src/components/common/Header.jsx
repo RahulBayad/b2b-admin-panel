@@ -22,6 +22,7 @@ import {
   MonitorCog,
   Gauge,
   Search,
+  Atom,
 } from "lucide-react";
 import { NavLink } from "react-router";
 import SearchBar from "../ui/SearchBar";
@@ -148,11 +149,22 @@ const Header = () => {
 
   return (
     <div className="border-b border-gray-200 bg-white">
-      <div className="py-1 px-6 flex justify-between">
+      <div className="py-2 px-6 flex justify-between items-center">
         {/* <Avatar src="/vite.svg" /> */}
         <h5>Vite Admin</h5>
         <div className="flex gap-2">
-          <SearchBar placeholder="Search Leads..." />
+          <OutlinedInput
+            startAdornment={<Search className='pr-2'/>}
+            endAdornment={<Atom className='pl-2'/>}
+            sx={{
+              height: 35,
+              minHeight: "auto",
+              outline: "none",
+              borderRadius: "1000px",
+            }}
+            
+          />
+          {/* <SearchBar placeholder="Search Leads..." /> */}
         </div>
       </div>
     </div>

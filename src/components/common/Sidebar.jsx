@@ -10,6 +10,8 @@ import {
   MonitorCog,
   Gauge,
   Dot,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 import { Button, Drawer, ListItemButton, Paper } from "@mui/material";
 import { NavLink } from "react-router";
@@ -143,6 +145,7 @@ const Sidebar = () => {
               textAlign: "left",
               justifyContent: "start",
               fontSize: 12,
+              height: 40,
               width: "100%",
               borderRadius: 0,
               pl: 2,
@@ -156,25 +159,31 @@ const Sidebar = () => {
             </Button>
           </NavLink>
         ) : (
-          <Button
-            className="bg-[#000988]"
-            sx={{
-              color: "sidebar.foreground",
-              textAlign: "left",
-              justifyContent: "start",
-              fontSize: 12,
-              width: "100%",
-              borderRadius: 0,
-              pl: 2,
-              ":hover": {
-                background: "linear-gradient(to right,  blue, violet)",
-              },
-            }}
-            startIcon={<Icon size={16} />}
-            onClick={() => toggleSubMenu()}
-          >
-            {title}
-          </Button>
+            <Button
+              className="bg-[#000988]"
+              sx={{
+                color: "sidebar.foreground",
+                textAlign: "left",
+                justifyContent: "start",
+                fontSize: 12,
+                height:40,
+                width: "100%",
+                borderRadius: 0,
+                pl: 2,
+                ":hover": {
+                  background: "linear-gradient(to right,  blue, violet)",
+                },
+              }}
+              startIcon={<Icon size={16} />}
+              onClick={() => toggleSubMenu()}
+              endIcon={
+                <ChevronDown size={14} 
+                className={`absolute right-4 top-[14px] transition duration-200 ${subMenuOpen ? "transform-[rotate(180deg)]" : ""}`}/>
+            }
+            >
+              {title}
+            </Button>
+
         )}
         { subMenu && 
           <div
@@ -182,9 +191,9 @@ const Sidebar = () => {
               subMenuOpen ? "max-h-96" : "max-h-0"
             }`}
           >
-            {subMenu.map((item) => {
+            {subMenu.map((item, index) => {
               return (
-                <NavLink to={url + item.url} className="">
+                <NavLink key={index} to={url + item.url} className="">
                   <Button
                     startIcon={<Dot/>}
                     sx={{
@@ -212,7 +221,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#00041b]  text-sm min-w-[200px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
+    <div className="bg-[#00041b] text-sm min-w-[220px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
       <figure className="px-3 py-2">
         <img src="/vite.svg" className="w-full h-16" />
       </figure>
