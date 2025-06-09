@@ -1,1 +1,8 @@
-
+.typing-animate {
+    width : 0;
+    animation: typing 2000ms alternate infinite;
+}
+@keyframes typing{
+    0% { width : 0}
+    100% { width : 50%}
+}

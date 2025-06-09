@@ -7,6 +7,8 @@ import {
   useTheme,
   Paper,
   ListItemButton,
+  Typography,
+  OutlinedInput,
 } from "@mui/material";
 
 import {
@@ -19,8 +21,10 @@ import {
   Settings,
   MonitorCog,
   Gauge,
+  Search,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import SearchBar from "../ui/SearchBar";
 
 const drawerWidth = 260;
 
@@ -143,20 +147,14 @@ const Header = () => {
   ];
 
   return (
-    <div className="border-b border-gray-200">
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: "none",
-          border: "none",
-          padding: "10px",
-          borderRadius : 0
-        }}
-      >
-        <Avatar src="/vite.svg" />
-      </AppBar>
-      
+    <div className="border-b border-gray-200 bg-white">
+      <div className="py-1 px-6 flex justify-between">
+        {/* <Avatar src="/vite.svg" /> */}
+        <h5>Vite Admin</h5>
+        <div className="flex gap-2">
+          <SearchBar placeholder="Search Leads..." />
+        </div>
+      </div>
     </div>
   );
 };
