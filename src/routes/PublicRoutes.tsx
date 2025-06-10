@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PublicRoutes = () => {
+const PublicRoutes:React.FC = ()=> {
   return (
     <div>PublicRoutes</div>
   )

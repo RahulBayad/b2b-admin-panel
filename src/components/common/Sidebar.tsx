@@ -11,9 +11,8 @@ import {
   Gauge,
   Dot,
   ChevronDown,
-  ChevronRight,
 } from "lucide-react";
-import { Button, Drawer, ListItemButton, Paper } from "@mui/material";
+import { Button } from "@mui/material";
 import { NavLink } from "react-router";
 
 const Sidebar = () => {
