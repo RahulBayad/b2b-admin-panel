@@ -88,12 +88,21 @@ const recentTransactions = [
 ];
 
 const columns = [
-  { field: "trader", headerName: "Member" },
-  { field: "product", headerName: "Product" },
-  { field: "type", headerName: "Type" },
-  { field: "quantity", headerName: "Quantity" },
-  { field: "status", headerName: "Status" },
+  { accessorKey: "trader", header: "Member" },
+  { accessorKey: "product", header: "Product" },
+  { accessorKey: "type", header: "Type" },
+  { accessorKey: "quantity", header: "Quantity" },
+  { accessorKey: "quantity", header: "Quantity" },
+  { accessorKey: "quantity", header: "Quantity" },
+  { accessorKey: "status", header: "Status" },
 ];
+// const columns = [
+//   { field: "trader", headerName: "Member" },
+//   { field: "product", headerName: "Product" },
+//   { field: "type", headerName: "Type" },
+//   { field: "quantity", headerName: "Quantity" },
+//   { field: "status", headerName: "Status" },
+// ];
 
 const Dashboard = () => {
   return (

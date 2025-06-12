@@ -1,197 +1,107 @@
 import {
-  ColumnsPanelTrigger,
-  DataGrid,
-  GridViewColumnIcon,
-  Toolbar,
-  ToolbarButton,
-  useGridApiContext,
-} from "@mui/x-data-grid";
-import { countries } from "../../countries";
-import {
-  Avatar,
-  Box,
-  Button,
-  MenuItem,
-  OutlinedInput,
-  Pagination,
-  Paper,
-  Select,
-  Stack,
-  Tooltip,
-  Typography,
+  Table, TableBody, TableCell, TableHead, TableRow,
+  Checkbox, Pagination, Select, MenuItem, Stack, Typography,
+  Button
 } from "@mui/material";
-import { useState } from "react";
 import {
-  Download,
-  ListFilter,
-  Printer,
-  RefreshCcw,
-  Search,
-} from "lucide-react";
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
 
-export const DataTable = ({
-  data: rows,
-  columns,
-  rowSelection = false,
-  showToolbar = true,
-  showExport,
-  showImport,
-  showFilter,
-  hideFooter = false,
-  showPagination = true,
-}) => {
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+export const DataTable = ({ data = [], columns, selectable = false }) => {
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+  const [columnPinning, setColumnPinning] = useState({ left: [], right: [] });
 
-  const totalPages = Math.ceil(rows.length / pageSize);
-
-  const handlePageChange = (_, value) => {
-    setPage(value - 1);
-  };
-  const handlePageSizeChange = (event) => {
-    setPageSize(event.target.value);
-    setPage(0); // reset to first page when page size changes
-  };
-
-  const MyToolbar = () => {
-    const apiRef = useGridApiContext();
-    const handleExport = () => {
-      apiRef.current.exportDataAsCsv(); // you can also use exportDataAsPrint()
-    };
-    return (
-      <Toolbar sx={{ pb: 2 }}>
-        <OutlinedInput
-          size="small"
-          fullWidth
-          sx={{ height: "35px", mr: 1, borderRadius: 9999 }}
-          startAdornment={<Search size={16} className="mr-2" />}
-        />
-        <div>
-          <Button
-            title="Reload Table Data"
-            size="medium"
-            sx={{
-              borderRadius: "9999px",
-              width: "40px",
-              height: "40px",
-              minWidth: "auto",
-              padding: "0px",
-            }}
-          >
-            <RefreshCcw size={16} />
-          </Button>
-        </div>
-        <div>
-          <ColumnsPanelTrigger render={<ToolbarButton />}>
-            <GridViewColumnIcon fontSize="small" />
-          </ColumnsPanelTrigger>
-        </div>
-        {showFilter && (
-          <div>
-            <Button
-              title="Filter"
-              size="medium"
-              sx={{
-                borderRadius: "9999px",
-                width: "40px",
-                height: "40px",
-                minWidth: "auto",
-                padding: "0px",
-              }}
-            >
-              <ListFilter className="!w-4 !h-4 p-0" />
-            </Button>
-          </div>
-        )}
-        {showImport && (
-          <div>
-            <Button
-              title="Import"
-              size="medium"
-              sx={{
-                borderRadius: "9999px",
-                width: "40px",
-                height: "40px",
-                minWidth: "auto",
-                padding: "0px",
-              }}
-            >
-              <Download size={16} />
-            </Button>
-          </div>
-        )}
-        {showExport && (
-          <div>
-            <Button
-              title="Export"
-              size="medium"
-              sx={{
-                borderRadius: "9999px",
-                width: "40px",
-                height: "40px",
-                minWidth: "auto",
-                padding: "0px",
-              }}
-              onClick={() => handleExport()}
-            >
-              <Printer size={16} />
-            </Button>
-          </div>
-        )}
-      </Toolbar>
-    );
-  };
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    enableRowSelection: selectable,
+    enablePinning: true,
+    state: {
+      rowSelection,
+      pagination,
+      columnPinning,
+    },
+    onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
+    onColumnPinningChange: setColumnPinning,
+  });
 
   return (
-    <Paper sx={{ p: 1 }}>
-      <DataGrid
-        slots={{ toolbar: MyToolbar }}
-        columns={columns}
-        rows={rows.slice(page * pageSize, (page + 1) * pageSize)}
-        pageSize={pageSize}
-        checkboxSelection={rowSelection}
-        sx={{
-          border: 0,
-          width: "100%",
-          backgroundColor: "inherit",
-          fontSize: 13,
-        }}
-        // disableColumnMenu
-        disableColumnSorting
-        hideFooterPagination
-        showToolbar={showToolbar}
-        hideFooter={hideFooter}
-      />
-      {showPagination && (
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={0}
-          spacing={2}
-        >
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography>Rows per page:</Typography>
-            <Select
-              value={pageSize}
-              onChange={handlePageSizeChange}
-              size="small"
-            >
-              {[5, 10, 25, 50, 100].map((size) => (
-                <MenuItem key={size} value={size}>
-                  {size}
-                </MenuItem>
-              ))}
-            </Select>
-          </Stack>
-          <Pagination
-            count={totalPages}
-            page={page + 1}
-            onChange={handlePageChange}
-            shape="rounded"
-          />
-        </Stack>
-      )}
-    </Paper>
+    <div style={{ overflowX: "auto" }}>
+      <div className="w-full overflow-scroll">
+        <Table sx={{width: "auto", minWidth : "1800px", background: 'white',}}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {selectable && (
+                  <TableCell>
+                    <Checkbox
+                      checked={table.getIsAllRowsSelected()}
+                      onChange={table.getToggleAllRowsSelectedHandler()}
+                    />
+                  </TableCell>
+                )}
+                {headerGroup.headers.map((header) => (
+                  <TableCell
+                    key={header.id}
+                    sx={{
+                      position: header.column.getIsPinned() ? 'sticky' : 'static',
+                      left: header.column.getIsPinned() === 'left' ? 0 : undefined,
+                      right: header.column.getIsPinned() === 'right' ? 0 : undefined,
+                      background: 'white',
+                      zIndex: 1,
+                    }}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {/* Pinning buttons (example) */}
+                    <div>
+                      <Button onClick={() => header.column.pin('left')}>Left</Button>
+                      <Button onClick={() => header.column.pin(false)}>❌</Button>
+                      <Button onClick={() => header.column.pin('right')}>Right</Button>
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getPaginationRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {selectable && (
+                  <TableCell>
+                    <Checkbox
+                      checked={row.getIsSelected()}
+                      onChange={row.getToggleSelectedHandler()}
+                    />
+                  </TableCell>
+                )}
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{
+                      position: cell.column.getIsPinned() ? 'sticky' : 'static',
+                      left: cell.column.getIsPinned() === 'left' ? 0 : undefined,
+                      right: cell.column.getIsPinned() === 'right' ? 0 : undefined,
+                      background: 'white',
+                      zIndex: 1,
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+      </div>
+    </div>
   );
 };

@@ -6,3 +6,7 @@
     0% { width : 0}
     100% { width : 50%}
 }
+
+table tr td {
+    border: "1px solid black"
+}

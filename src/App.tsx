@@ -1,8 +1,9 @@
 import AppRoutes from './routes/AppRoutes'
+import "./App.css"
 
 function App() {
   return (
-    <div className=''>
+    <div className='' id='appComponent'>
       <AppRoutes/>
     </div>   
   )
