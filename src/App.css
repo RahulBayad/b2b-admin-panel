@@ -7,6 +7,24 @@
     100% { width : 50%}
 }
 
-table tr td {
-    border: "1px solid black"
+table { 
+    width : 100%;
+    font-size: 13px;
+}
+table tr:nth-child(even){
+    background-color: #e9ebff;
+}
+table tr{
+    background: none;
+}
+table tr th,
+table tr td{
+    /* border: 1px solid red; */
+}
+table tr th{
+    text-align: left;
+}
+
+::-webkit-scrollbar{
+    height: 6px;
 }

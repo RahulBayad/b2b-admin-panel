@@ -5,6 +5,10 @@ import App from "./App.jsx";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { barElementClasses, pieArcLabelClasses } from "@mui/x-charts";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const theme = createTheme({
   palette: {
@@ -31,7 +35,9 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+    // fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",/
+    fontFamily: '"Roboto", sans-serif',
+    // fontFamily: '"Inter", sans-serif',
     button: {
       textTransform: "none",
       fontWeight: 500,
@@ -77,6 +83,27 @@ const theme = createTheme({
           },
         },
       },
+    },
+    MuiMenu:{
+      styleOverrides : {
+        root : {
+          boxShadow: "none",
+          padding : "0px",
+        },
+        paper : {
+          boxShadow : "4px 4px 10px rgba(230, 230, 230, 0.1)",
+          borderRadius : 5, 
+          p:0,
+        }
+      }
+    },
+    MuiTableCell : {
+      styleOverrides : {
+        root : {
+          fontSize : 12,
+          fontWeight: 500
+        }
+      }
     },
     MuiTextField: {
       styleOverrides: {
