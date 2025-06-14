@@ -1,6 +1,7 @@
 import React from 'react'
-import { DataTable } from '../../../components/ui/DataTable'
+import { DataTable, type TableColumnDef } from '../../../components/ui/DataTable'
 import type { GridColDef } from '@mui/x-data-grid'
+import { Typography } from '@mui/material';
 
 
 type CompanyTable = {
@@ -69,47 +70,32 @@ const companyTableData:CompanyTable = [
   },
 ]
 
-// const columns: GridColDef<CompanyTable>[] = [
-//   {field : "name", headerName: "Company", flex:1 },
-//   {field : "id", headerName: "Company ID", flex:1 },
-//   {
-//     field : "gst", 
-//     headerName: "Legal",
-//     flex:1,
-//     renderCell : (params)=>(
-//       <div className='flex flex-col'>
-//         <span><b>GST: </b>{params.row.gst}</span>
-//         <span><b>PAN: </b>{params.row.pan}</span>
-//       </div>
-//     ) 
-//   },
-//   {field : "owner", headerName: "Owner Name", flex:1 },
-//   {field : "email", headerName: "Email", flex:1 },
-//   {field : "mobile", headerName: "Contact", flex:1 },
-// ]
-const columns = [
-  {accessorKey : "name", header: "Company", flex:1 },
-  {accessorKey : "id", header: "Company ID", flex:1 },
+
+const columns: TableColumnDef<CompanyTable>[] = [
+  {accessorKey : "name", header: "Company", width:150, },
+  // {accessorKey : "id", header: "Company ID", width: 150,},
+  // {accessorKey : "err", header: "err", width: 150, },
   {
     accessorKey : "gst", 
-    header: "Legal",
-    flex:1,
+    header: "Legal", width: 150,
     cell : (params)=>(
       <div className='flex flex-col'>
-        <span><b>GST: </b>{params.row.gst}</span>
-        <span><b>PAN: </b>{params.row.pan}</span>
+        <span><b>GST: </b>{params.row.original.gst}</span>
+        <span><b>PAN: </b>{params.row.original.pan}</span>
       </div>
     ) 
   },
-  {accessorKey : "owner", header: "Owner Name", flex:1 },
-  {accessorKey : "email", header: "Email", flex:1 },
-  {accessorKey : "mobile", header: "Contact", flex:1 },
+  {accessorKey : "owner", header: "Owner Name", width: 150, },
+  {accessorKey : "owner", header: "Owner Name", width: 150, },
+  {accessorKey : "email", header: "Email", width: 150, },
+  {accessorKey : "mobile", header: "Contact", width: 150, },
 ]
 
 
 const Company: React.FunctionComponent = () => {
   return (
     <React.Fragment>  
+      <Typography fontSize={18} fontWeight={700}>Company</Typography>
       <DataTable columns={columns} data={companyTableData} rowSelection={false} selectable/>
     </React.Fragment>
   )

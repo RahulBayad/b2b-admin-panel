@@ -140,19 +140,19 @@ const Sidebar = () => {
           <NavLink to={url ? url : "#"}>
             <Button
               sx={{
-              color: "sidebar.foreground",
+              // color: "sidebar.foreground",
               textAlign: "left",
               justifyContent: "start",
-              fontSize: 12,
+              fontSize: 13,
               height: 40,
               width: "100%",
               borderRadius: 0,
               pl: 2,
-              ":hover": {
-                background: "linear-gradient(to right,  blue, violet)",
-              },
+              // ":hover": {
+              //   background: "linear-gradient(to right,  blue, violet)",
+              // },
             }}
-              startIcon={Icon ? <Icon size={16} /> : ""}
+              startIcon={Icon ? <Icon size={18} /> : ""}
             >
               {title}
             </Button>
@@ -161,19 +161,19 @@ const Sidebar = () => {
             <Button
               className="bg-[#000988]"
               sx={{
-                color: "sidebar.foreground",
+                // color: "sidebar.foreground",
                 textAlign: "left",
                 justifyContent: "start",
-                fontSize: 12,
+                fontSize: 13,
                 height:40,
                 width: "100%",
                 borderRadius: 0,
                 pl: 2,
-                ":hover": {
-                  background: "linear-gradient(to right,  blue, violet)",
-                },
+                // ":hover": {
+                //   background: "linear-gradient(to right,  blue, violet)",
+                // },
               }}
-              startIcon={<Icon size={16} />}
+              startIcon={<Icon size={18} />}
               onClick={() => toggleSubMenu()}
               endIcon={
                 <ChevronDown size={14} 
@@ -198,14 +198,14 @@ const Sidebar = () => {
                     sx={{
                       textAlign: "left",
                       justifyContent: "start",
-                      fontSize: 12,
+                      fontSize: 13,
                       width: "100%",
                       borderRadius: 0,
                       pl: 1,
-                      color: "white",
-                      ":hover": {
-                        background: "linear-gradient(to right,  blue, violet)",
-                      },
+                      // color: "white",
+                      // ":hover": {
+                      //   background: "linear-gradient(to right,  blue, violet)",
+                      // },
                     }}
                   >
                     {item.title}
@@ -220,7 +220,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#00041b] text-sm min-w-[220px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
+    <div className="bg-[#00041b] bg-white border-r border-gray-200 text-sm min-w-[220px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
       <figure className="px-3 py-2">
         <img src="/vite.svg" className="w-full h-16" />
       </figure>

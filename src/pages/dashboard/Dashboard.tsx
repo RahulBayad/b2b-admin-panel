@@ -90,9 +90,8 @@ const recentTransactions = [
 const columns = [
   { accessorKey: "trader", header: "Member" },
   { accessorKey: "product", header: "Product" },
+  { accessorKey: "brand", header: "Brand" },
   { accessorKey: "type", header: "Type" },
-  { accessorKey: "quantity", header: "Quantity" },
-  { accessorKey: "quantity", header: "Quantity" },
   { accessorKey: "quantity", header: "Quantity" },
   { accessorKey: "status", header: "Status" },
 ];
@@ -332,7 +331,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ md: 6 }}>
+        <Grid size={{ md: 6 }} sx={{boxSizing: "border-box"}}>
           <Card className="shadow-lg">
             <CardContent>
               <Typography variant="h6" className="mb-4 text-gray-800">

@@ -154,17 +154,17 @@ const Header = () => {
         <h5>Vite Admin</h5>
         <div className="flex gap-2">
           <OutlinedInput
-            startAdornment={<Search className='pr-2'/>}
-            endAdornment={<Atom className='pl-2'/>}
+            startAdornment={<Search className='pr-2' />}
+            endAdornment={<Atom className='pl-2' />}
             sx={{
               height: 35,
               minHeight: "auto",
-              outline: "none",
               borderRadius: "1000px",
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "border.hover",
+              },
             }}
-            
           />
-          {/* <SearchBar placeholder="Search Leads..." /> */}
         </div>
       </div>
     </div>

@@ -1,45 +1,20 @@
 import React, { useState } from "react";
-import { DataTable } from "../../../components/ui/DataTable";
+import { DataTable, type TableColumnDef } from "../../../components/ui/DataTable";
 import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
-import { countries } from "../../../countries";
-import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { countries } from "../../../countries.js";
 
 const Countries = () => {
-  
 
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "flag",
-  //     headerName: "Flag",
-  //     headerAlign: "center",
-  //     renderCell: (params) => (
-  //       <Box
-  //         sx={{
-  //           display: "flex",
-  //           alignItems: "center",
-  //           justifyContent: "center",
-  //           width: "100%",
-  //           height: "100%",
-  //         }}
-  //       >
-  //         <Avatar
-  //           variant="square"
-  //           src={params.value}
-  //           alt="flag"
-  //           sx={{ width: 30, height: 22}}
-  //         />
-  //       </Box>
-  //     ),
-  //     sortable: false,
-  //     filterable: false,
-  //   },
-  //   { field: "country", headerName: "Country", flex: 1 },
-  //   { field: "date", headerName: "Date", flex: 1, type: "date" },
-  //   { field: "iso_code", headerName: "ISO Code", flex: 1 },
-  //   { field: "phone_code", headerName: "Phone Code", flex: 1 },
-  //   { field: "continent", headerName: "Continent", flex: 1 },
-  // ];
-  const columns = [
+  interface TableColumns {
+    flag: string;
+    country: string;
+    date: string | Date;
+    iso_code: string;
+    phone_code: string;
+    continent: string;
+  }
+  
+  const columns: TableColumnDef<TableColumns>[] = [
     {
       accessorKey: "flag",
       header: "Flag",
@@ -57,23 +32,23 @@ const Countries = () => {
             variant="square"
             src={params.getValue()}
             alt="flag"
-            sx={{ width: 30, height: 22}}
+            sx={{ width: 30, height: 22 }}
           />
         </Box>
       ),
     },
-    { accessorKey: "country", header: "Country" },
-    { accessorKey: "date", header: "Date", type: "date" },
+    { accessorKey: "country", header: "Country", },
+    { accessorKey: "date", header: "Date", },
     { accessorKey: "iso_code", header: "ISO Code" },
-    { accessorKey: "phone_code", header: "Phone Code" },
+    { accessorKey: "phone_code", header: "Phone Code", flex: 1 },
     { accessorKey: "continent", header: "Continent" },
   ];
   const data = countries;
 
   const addDialog = () => {
-    const [ isDialogOpen , setIsDialogOpen ] = useState<boolean>(true) 
-    const handleOpen = () : void => setIsDialogOpen(true)
-    const handleClose = () : void => setIsDialogOpen(false)
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true)
+    const handleOpen = (): void => setIsDialogOpen(true)
+    const handleClose = (): void => setIsDialogOpen(false)
 
     return (
       <Dialog
@@ -82,7 +57,7 @@ const Countries = () => {
       >
         <DialogTitle>Add New Country</DialogTitle>
         <DialogContent>
-          
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -98,7 +73,7 @@ const Countries = () => {
         <Typography variant="h5" fontWeight={600} >Countries</Typography>
         <Button variant="contained" id="myButton">New</Button>
       </div>
-      <DataTable columns={columns} data={data} selectable/>
+      <DataTable columns={columns} data={data} selectable />
     </div>
   );
 };
