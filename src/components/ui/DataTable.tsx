@@ -177,83 +177,85 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
   }, []);
 
   return (
-    <div className="">
-      <Paper className="mt-1" sx={{ minWidth: 650, width: '100%', border: '1px solid #e0e0e0', borderRadius: 12 }}>
-        <TableToolbar />
-        <TableContainer component={Paper} sx={{ overflowX: 'auto', maxWidth: "100%" }}>
-          <Table sx={{ minWidth: 'max-content', width: '100%', tableLayout: 'auto', display: "auto" }}>
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {selectable && (
-                    <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#f5f5f5', minWidth: '48px' }}>
-                      <Checkbox
-                        checked={table.getIsAllRowsSelected()}
-                        onChange={table.getToggleAllRowsSelectedHandler()}
-                      />
-                    </TableCell>
-                  )}
-                  {headerGroup.headers.map((header) => (
-                    <TableCell
-                      key={header.id}
-                      sx={{
-                        fontSize: 14,
-                        position: header.column.getIsPinned() ? 'sticky' : 'static',
-                        left: header.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
-                        right: header.column.getIsPinned() === 'right' ? 0 : undefined,
-                        zIndex: 1,
-                        minWidth: '200px',
-                        backgroundColor: '#f5f5f5',
-                      }}
-                    >
-                      <div className="flex justify-between items-center pr-1 table-header">
-                        <span className="flex gap-1 items-center">
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          <Button
-                            startIcon={<PushPinIcon sx={{ fontSize: 14 }} />}
-                            onClick={() => header.column.pin(header.column.getIsPinned() ? false : 'left')}
-                            sx={{ minWidth: 'auto', opacity: 0, ':hover': { opacity: 1 } }}
-                          />
-                        </span>
-                        <TableHeaderMenu header={header} />
-                      </div>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody>
-              {table.getPaginationRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {selectable && (
-                    <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#ffffff', minWidth: '48px' }}>
-                      <Checkbox
-                        checked={row.getIsSelected()}
-                        onChange={row.getToggleSelectedHandler()}
-                      />
-                    </TableCell>
-                  )}
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      sx={{
-                        position: cell.column.getIsPinned() ? 'sticky' : 'static',
-                        left: cell.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
-                        right: cell.column.getIsPinned() === 'right' ? 0 : undefined,
-                        zIndex: 1,
-                        fontSize: 13,
-                        minWidth: '200px',
-                      }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+    <Paper className="mt-1"
+      sx={{
+          display: "flex", flexDirection: "column", border: '1px solid red'
+      }}>
+      {/* <TableToolbar /> */}
+      <Paper className="" sx={{ overflow: "scroll", boxSizing: "border-box" }}>
+        <Table sx={{ minWidth: 'max-content', width: '100%', tableLayout: 'auto', display: "block" }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {selectable && (
+                  <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#f5f5f5', minWidth: '48px' }}>
+                    <Checkbox
+                      checked={table.getIsAllRowsSelected()}
+                      onChange={table.getToggleAllRowsSelectedHandler()}
+                    />
+                  </TableCell>
+                )}
+                {headerGroup.headers.map((header) => (
+                  <TableCell
+                    key={header.id}
+                    sx={{
+                      fontSize: 14,
+                      position: header.column.getIsPinned() ? 'sticky' : 'static',
+                      left: header.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
+                      right: header.column.getIsPinned() === 'right' ? 0 : undefined,
+                      zIndex: 1,
+                      // minWidth: '200px',
+                      backgroundColor: '#f5f5f5',
+                    }}
+                  >
+                    <div className="flex justify-between items-center pr-1 table-header">
+                      <span className="flex gap-1 items-center">
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        <Button
+                          startIcon={<PushPinIcon sx={{ fontSize: 14 }} />}
+                          onClick={() => header.column.pin(header.column.getIsPinned() ? false : 'left')}
+                          sx={{ minWidth: 'auto', opacity: 0, ':hover': { opacity: 1 } }}
+                        />
+                      </span>
+                      <TableHeaderMenu header={header} />
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getPaginationRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {selectable && (
+                  <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#ffffff', minWidth: '48px' }}>
+                    <Checkbox
+                      checked={row.getIsSelected()}
+                      onChange={row.getToggleSelectedHandler()}
+                    />
+                  </TableCell>
+                )}
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{
+                      position: cell.column.getIsPinned() ? 'sticky' : 'static',
+                      left: cell.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
+                      right: cell.column.getIsPinned() === 'right' ? 0 : undefined,
+                      zIndex: 1,
+                      fontSize: 13,
+                      // minWidth: '200px',
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
       </Paper>
-    </div>
+    </Paper>
   );
 };
