@@ -12,21 +12,26 @@ table {
     width : 100%;
     font-size: 13px;
     overflow-x: scroll !important;
+    column-gap: 0px;
 }
-table tr:nth-child(even){
-    background-color: #f5f5f5;
-}
-table tr{
-    background: none;
-}
-table thead tr:nth-child(1){
-    border-bottom: 1px solid rgb(247, 233, 255);
-    border-top: 1px solid rgb(247, 233, 255);
-}
-table tr th{
-    text-align: left;
+table tr td{
+    padding: 8px;
+    border: 1px solid #eeeeee;
 }
 
+table tr:nth-child(even) td{
+    background-color: #f5f5f5;
+}
+table tr:nth-child(odd) td{
+    background-color: white;
+}
+table thead tr:nth-child(1){
+    /* border-bottom: 1px solid rgb(247, 233, 255);
+    border-top: 1px solid rgb(247, 233, 255); */
+}
+table thead tr td{
+    background-color: #f5f5f5;
+}
 ::-webkit-scrollbar{
     height: 6px;
 }

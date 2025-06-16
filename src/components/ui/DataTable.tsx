@@ -1,7 +1,12 @@
 import {
   Table, TableBody, TableCell, TableHead, TableRow,
   Checkbox, IconButton, OutlinedInput, Button, Menu, MenuItem, Paper,
-  TableContainer
+  TableContainer,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider
 } from "@mui/material";
 import PushPinIcon from '@mui/icons-material/PushPin';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -12,8 +17,8 @@ import {
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
-import { GridViewColumnIcon } from "@mui/x-data-grid";
-import { Import, ListFilter, Printer, Search } from "lucide-react";
+import { GridArrowDownwardIcon, GridArrowUpwardIcon, GridMenuIcon, GridViewColumnIcon } from "@mui/x-data-grid";
+import { EllipsisVertical, Import, ListFilter, Printer, Search } from "lucide-react";
 import React, { useCallback, useState } from "react";
 
 type DataTableProps = {
@@ -146,23 +151,29 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
 
     return (
       <>
-        {/* <Button
+        <Button
           aria-controls={`pin-menu-${header.id}`}
           aria-haspopup="true"
           aria-expanded={Boolean(anchorEl)}
           onClick={handleOpen}
-          sx={{ minWidth: "auto", opacity: 0, ":hover": { opacity: 1 } }}
+          sx={{ minWidth: "auto", opacity: 1, p:1, ":hover": { opacity: 1 } }}
         >
-          <MenuIcon size={16} />
-        </Button> */}
+          <EllipsisVertical size={16} />
+        </Button>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          className="mui-menu"
+          slotProps={{
+            paper : {
+              sx : {
+                borderRadius : "5px"
+              }
+            }
+          }}
         >
-          <MenuItem onClick={handlePinLeft} sx={{ py: 1, px: 2, fontSize: 13 }}>
+          {/* <MenuItem onClick={handlePinLeft} sx={{ py: 1, px: 2, fontSize: 13 }}>
             Pin Left
           </MenuItem>
           <MenuItem onClick={handlePinRight} sx={{ py: 1, px: 2, fontSize: 13 }}>
@@ -170,7 +181,28 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
           </MenuItem>
           <MenuItem onClick={handleUnpin} sx={{ py: 1, px: 2, fontSize: 13 }}>
             Unpin
-          </MenuItem>
+          </MenuItem> */}
+          <ListItemButton>    
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><GridArrowUpwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
+            <ListItemText primary="Sort ASC"></ListItemText>
+          </ListItemButton>
+          <ListItemButton>    
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><GridArrowDownwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
+            <ListItemText primary="Sort DESC"></ListItemText>
+          </ListItemButton>
+          <Divider/>
+          <ListItemButton onClick={handlePinLeft}>    
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><PushPinIcon sx={{width: "19px", p: 0, transform: "rotate(30deg)"}}/> </ListItemIcon>
+            <ListItemText primary="Pin Left"></ListItemText>
+          </ListItemButton>
+          <ListItemButton onClick={handlePinRight}>    
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><PushPinIcon sx={{width: "19px", p: 0, transform: "rotate(-30deg)"}}/> </ListItemIcon>
+            <ListItemText primary="Pin Right"></ListItemText>
+          </ListItemButton>
+          {/* <ListItemButton onClick={handleUnpin}>    
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><PushPinIcon sx={{width: "19px", p: 0,}}/> </ListItemIcon>
+            <ListItemText primary="Unpin"></ListItemText>
+          </ListItemButton> */}
         </Menu>
       </>
     );
@@ -179,82 +211,83 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
   return (
     <Paper className="mt-1"
       sx={{
-          display: "flex", flexDirection: "column", border: '1px solid red'
-      }}>
-      {/* <TableToolbar /> */}
-      <Paper className="" sx={{ overflow: "scroll", boxSizing: "border-box" }}>
-        <Table sx={{ minWidth: 'max-content', width: '100%', tableLayout: 'auto', display: "block" }}>
-          <TableHead>
+          display: "grid",
+          overflow: "hidden"
+      }}
+    >
+      <TableToolbar />
+      <Paper sx={{ overflowX: "auto", border: "none", borderRadius: 0 }}>
+        <table className="w-full whitespace-nowrap" >
+          <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <tr key={headerGroup.id}>
                 {selectable && (
-                  <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#f5f5f5', minWidth: '48px' }}>
+                  <td className="sticky left-0 z-10">
                     <Checkbox
+                      size="small"
                       checked={table.getIsAllRowsSelected()}
                       onChange={table.getToggleAllRowsSelectedHandler()}
                     />
-                  </TableCell>
+                  </td>
                 )}
                 {headerGroup.headers.map((header) => (
-                  <TableCell
+                  <td
                     key={header.id}
-                    sx={{
-                      fontSize: 14,
+                    style={{
                       position: header.column.getIsPinned() ? 'sticky' : 'static',
-                      left: header.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
+                      left: header.column.getIsPinned() === 'left' ? (selectable ? 54 : 0) : undefined,
                       right: header.column.getIsPinned() === 'right' ? 0 : undefined,
-                      zIndex: 1,
-                      // minWidth: '200px',
-                      backgroundColor: '#f5f5f5',
+                      zIndex: 2,
+                      minWidth: "200px",
                     }}
                   >
                     <div className="flex justify-between items-center pr-1 table-header">
                       <span className="flex gap-1 items-center">
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         <Button
-                          startIcon={<PushPinIcon sx={{ fontSize: 14 }} />}
                           onClick={() => header.column.pin(header.column.getIsPinned() ? false : 'left')}
-                          sx={{ minWidth: 'auto', opacity: 0, ':hover': { opacity: 1 } }}
-                        />
+                          sx={{ minWidth: 'auto', p:0, height: "30px", width: "30px", borderRadius: "1000px", display : header.column.getIsPinned() ? "initial" : "none" }}
+                        >
+                          <PushPinIcon sx={{width: "16px", height: "16px", color: "gray" , p: 0, mr:0, minWidth: "auto"}}/>
+                        </Button>
                       </span>
                       <TableHeaderMenu header={header} />
                     </div>
-                  </TableCell>
+                  </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-          </TableHead>
-          <TableBody>
+          </thead>
+          <tbody>
             {table.getPaginationRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <tr key={row.id}>
                 {selectable && (
-                  <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, backgroundColor: '#ffffff', minWidth: '48px' }}>
+                  <td className="sticky left-0 z-10 p-0">
                     <Checkbox
+                      size="small"
                       checked={row.getIsSelected()}
                       onChange={row.getToggleSelectedHandler()}
                     />
-                  </TableCell>
+                  </td>
                 )}
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell
+                  <td
                     key={cell.id}
-                    sx={{
+                    style={{
                       position: cell.column.getIsPinned() ? 'sticky' : 'static',
-                      left: cell.column.getIsPinned() === 'left' ? (selectable ? 48 : 0) : undefined,
+                      left: cell.column.getIsPinned() === 'left' ? (selectable ? 54 : 0) : undefined,
                       right: cell.column.getIsPinned() === 'right' ? 0 : undefined,
-                      zIndex: 1,
+                      zIndex: 10,
                       fontSize: 13,
-                      // minWidth: '200px',
                     }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-
+          </tbody>
+        </table>
       </Paper>
     </Paper>
   );

@@ -86,8 +86,6 @@ const columns: TableColumnDef<CompanyTable>[] = [
     ) 
   },
   {accessorKey : "owner", header: "Owner Name", width: 150, },
-  {accessorKey : "owner", header: "Owner Name", width: 150, },
-  {accessorKey : "owner", header: "Owner Name", width: 150, },
   {accessorKey : "email", header: "Email", width: 150, },
   {accessorKey : "mobile", header: "Contact", width: 150, },
 ]
