@@ -14,8 +14,13 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
   type ColumnDef,
+  type ColumnPinningState,
+  type RowSelectionInstance,
+  type RowSelectionState,
+  type SortingState,
 } from "@tanstack/react-table";
 import { GridArrowDownwardIcon, GridArrowUpwardIcon, GridMenuIcon, GridViewColumnIcon } from "@mui/x-data-grid";
 import { EllipsisVertical, Import, ListFilter, Printer, Search } from "lucide-react";
@@ -32,9 +37,10 @@ export type TableColumnDef<T> = ColumnDef<T> & {
 };
 
 export const DataTable = ({ data = [], columns, selectable = false }) => {
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
-  const [columnPinning, setColumnPinning] = useState({ left: [], right: [] });
+  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({ left: [], right: [] });
   const [columnVisibility, setColumnVisibility] = useState({});
 
   const table = useReactTable({
@@ -48,12 +54,15 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
       rowSelection,
       pagination,
       columnPinning,
-      columnVisibility
+      columnVisibility,
+      sorting
     },
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     onColumnPinningChange: setColumnPinning,
-    onColumnVisibilityChange: setColumnVisibility
+    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange : setSorting,
+    getSortedRowModel : getSortedRowModel()
   });
 
   const TableToolbar = useCallback(() => {
@@ -168,26 +177,18 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
           slotProps={{
             paper : {
               sx : {
-                borderRadius : "5px"
+                borderRadius : "5px",
+                width: "180px"
               }
             }
           }}
         >
-          {/* <MenuItem onClick={handlePinLeft} sx={{ py: 1, px: 2, fontSize: 13 }}>
-            Pin Left
-          </MenuItem>
-          <MenuItem onClick={handlePinRight} sx={{ py: 1, px: 2, fontSize: 13 }}>
-            Pin Right
-          </MenuItem>
-          <MenuItem onClick={handleUnpin} sx={{ py: 1, px: 2, fontSize: 13 }}>
-            Unpin
-          </MenuItem> */}
           <ListItemButton>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><GridArrowUpwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
-            <ListItemText primary="Sort ASC"></ListItemText>
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}} ><GridArrowUpwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
+            <ListItemText primary="Sort ASC" ></ListItemText>
           </ListItemButton>
           <ListItemButton>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><GridArrowDownwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
+            <ListItemIcon sx={{width: "30px", minWidth: "auto"}} onClick={()=>header.column.toggleSorting("desc")}><GridArrowDownwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
             <ListItemText primary="Sort DESC"></ListItemText>
           </ListItemButton>
           <Divider/>
