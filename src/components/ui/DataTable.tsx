@@ -1,15 +1,14 @@
 import {
-  Table, TableBody, TableCell, TableHead, TableRow,
   Checkbox, IconButton, OutlinedInput, Button, Menu, MenuItem, Paper,
-  TableContainer,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  Dialog,
+  DialogContent,
+  DialogActions
 } from "@mui/material";
 import PushPinIcon from '@mui/icons-material/PushPin';
-import MenuIcon from '@mui/icons-material/Menu';
 import {
   flexRender,
   getCoreRowModel,
@@ -18,36 +17,41 @@ import {
   useReactTable,
   type ColumnDef,
   type ColumnPinningState,
-  type RowSelectionInstance,
-  type RowSelectionState,
   type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table";
-import { GridArrowDownwardIcon, GridArrowUpwardIcon, GridMenuIcon, GridViewColumnIcon } from "@mui/x-data-grid";
+import { GridArrowDownwardIcon, GridArrowUpwardIcon, GridViewColumnIcon } from "@mui/x-data-grid";
 import { EllipsisVertical, Import, ListFilter, Printer, Search } from "lucide-react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, type JSX, type ReactElement } from "react";
 
 type DataTableProps = {
-  data: unknown[],
-  columns: unknown[],
-  selectable: boolean,
+  data: unknown[];
+  columns: unknown[];
+  selectable?: boolean;
+  FilterDialogContent?: JSX.Element;
+  showToolbar?: boolean;
+  enableFilter?: boolean;
+  enableExport?: boolean;
+  enableImport?: boolean;
+  enableSearch?: boolean;
 }
 
 export type TableColumnDef<T> = ColumnDef<T> & {
   flex?: number;
+  width?: number;
 };
 
-export const DataTable = ({ data = [], columns, selectable = false }) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [sorting, setSorting] = useState<SortingState>([]);
+export const DataTable = ({ data = [], columns, selectable = false, FilterDialogContent }: DataTableProps) => {
+  const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({ left: [], right: [] });
-  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     enableRowSelection: selectable,
     enablePinning: true,
     state: {
@@ -57,16 +61,24 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
       columnVisibility,
       sorting
     },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     onColumnPinningChange: setColumnPinning,
     onColumnVisibilityChange: setColumnVisibility,
-    onSortingChange : setSorting,
-    getSortedRowModel : getSortedRowModel()
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel()
   });
 
   const TableToolbar = useCallback(() => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
+    const openFilter = () => {
+      console.log("open")
+      setIsFilterOpen(true)
+    }
+    const closeFilter = () => setIsFilterOpen(false)
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -125,9 +137,17 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
         <IconButton sx={{ p: 1.2 }}>
           <Printer size={18} />
         </IconButton>
-        <IconButton sx={{ p: 1.2 }}>
+        <IconButton sx={{ p: 1.2 }} onClick={openFilter}>
           <ListFilter size={18} />
         </IconButton>
+        <Dialog open={isFilterOpen} onClose={closeFilter}>
+          <DialogContent>
+            <FilterDialogContent />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeFilter}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
       </Paper>
     )
   }, [columns]);
@@ -135,28 +155,40 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
   const TableHeaderMenu = useCallback(({ header }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+    const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+    const handleClose = () => setAnchorEl(null);
 
     const handlePinLeft = () => {
       header.column.pin('left');
       handleClose();
     };
-
     const handlePinRight = () => {
       header.column.pin('right');
       handleClose();
     };
-
     const handleUnpin = () => {
       header.column.pin(false);
       handleClose();
     };
+
+    const sortASC = (columnID: string) => {
+      table.setSorting((prev) => {
+        const filteredCols = prev.filter(col => col.id !== columnID)
+        return [...filteredCols, { id: columnID, desc: false }]
+      })
+      handleClose()
+    }
+    const sortDESC = (columnID: string) => {
+      table.setSorting((prev) => {
+        const filteredCols = prev.filter(col => col.id !== columnID)
+        return [...filteredCols, { id: columnID, desc: true }]
+      })
+      handleClose()
+    }
+    const unSort = (columnID: string) => {
+      table.setSorting(prev => prev.filter(col => col.id !== columnID))
+      handleClose()
+    }
 
     return (
       <>
@@ -165,9 +197,9 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
           aria-haspopup="true"
           aria-expanded={Boolean(anchorEl)}
           onClick={handleOpen}
-          sx={{ minWidth: "auto", opacity: 1, p:1, ":hover": { opacity: 1 } }}
+          sx={{ minWidth: "auto", opacity: 1, p: 1, ":hover": { opacity: 1 } }}
         >
-          <EllipsisVertical size={16} />
+          <EllipsisVertical size={13} />
         </Button>
         <Menu
           anchorEl={anchorEl}
@@ -175,29 +207,32 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
           onClose={handleClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           slotProps={{
-            paper : {
-              sx : {
-                borderRadius : "5px",
-                width: "180px"
+            paper: {
+              sx: {
+                borderRadius: "5px"
               }
             }
           }}
         >
-          <ListItemButton>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}} ><GridArrowUpwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
-            <ListItemText primary="Sort ASC" ></ListItemText>
+          <ListItemButton onClick={() => sortASC(header.column.columnDef.accessorKey)}>
+            <ListItemIcon sx={{ width: "30px", minWidth: "auto" }}>
+              <GridArrowUpwardIcon sx={{ width: "19px", p: 0 }} />
+            </ListItemIcon>
+            <ListItemText primary="Sort ASC"></ListItemText>
           </ListItemButton>
-          <ListItemButton>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}} onClick={()=>header.column.toggleSorting("desc")}><GridArrowDownwardIcon sx={{width: "19px", p: 0}}/> </ListItemIcon>
+          <ListItemButton onClick={() => sortDESC(header.column.columnDef.accessorKey)}>
+            <ListItemIcon sx={{ width: "30px", minWidth: "auto" }}>
+              <GridArrowDownwardIcon sx={{ width: "19px", p: 0 }} />
+            </ListItemIcon>
             <ListItemText primary="Sort DESC"></ListItemText>
           </ListItemButton>
-          <Divider/>
-          <ListItemButton onClick={handlePinLeft}>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><PushPinIcon sx={{width: "19px", p: 0, transform: "rotate(30deg)"}}/> </ListItemIcon>
+          <Divider />
+          <ListItemButton onClick={handlePinLeft}>
+            <ListItemIcon sx={{ width: "30px", minWidth: "auto" }}><PushPinIcon sx={{ width: "19px", p: 0, transform: "rotate(30deg)" }} /> </ListItemIcon>
             <ListItemText primary="Pin Left"></ListItemText>
           </ListItemButton>
-          <ListItemButton onClick={handlePinRight}>    
-            <ListItemIcon sx={{width: "30px", minWidth: "auto"}}><PushPinIcon sx={{width: "19px", p: 0, transform: "rotate(-30deg)"}}/> </ListItemIcon>
+          <ListItemButton onClick={handlePinRight}>
+            <ListItemIcon sx={{ width: "30px", minWidth: "auto" }}><PushPinIcon sx={{ width: "19px", p: 0, transform: "rotate(-30deg)" }} /> </ListItemIcon>
             <ListItemText primary="Pin Right"></ListItemText>
           </ListItemButton>
           {/* <ListItemButton onClick={handleUnpin}>    
@@ -209,11 +244,13 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
     );
   }, []);
 
+
+
   return (
     <Paper className="mt-1"
       sx={{
-          display: "grid",
-          overflow: "hidden"
+        display: "grid",
+        overflow: "hidden"
       }}
     >
       <TableToolbar />
@@ -247,10 +284,27 @@ export const DataTable = ({ data = [], columns, selectable = false }) => {
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         <Button
                           onClick={() => header.column.pin(header.column.getIsPinned() ? false : 'left')}
-                          sx={{ minWidth: 'auto', p:0, height: "30px", width: "30px", borderRadius: "1000px", display : header.column.getIsPinned() ? "initial" : "none" }}
+                          sx={{ minWidth: 'auto', p: 0, height: "30px", width: "30px", borderRadius: "1000px", display: header.column.getIsPinned() ? "initial" : "none" }}
                         >
-                          <PushPinIcon sx={{width: "16px", height: "16px", color: "gray" , p: 0, mr:0, minWidth: "auto"}}/>
+                          <PushPinIcon sx={{ width: "16px", height: "16px", color: "gray", p: 0, mr: 0, minWidth: "auto" }} />
                         </Button>
+                        {
+                          header.column.getIsSorted() === "asc" ?
+                            <Button
+                              sx={{ minWidth: 'auto', p: 0, height: "30px", width: "30px", borderRadius: "1000px" }}
+                              // onClick={() => table.setSorting(prev => prev.filter(col => col.id !== header.column.columnDef?.accessorKey))}
+                              onClick={() => header.column.toggleSorting()}
+                            >
+                              <GridArrowUpwardIcon sx={{ width: "16px", p: 0, color: "gray" }} />
+                            </Button> :
+                            header.column.getIsSorted() === "desc" ?
+                              <Button
+                                sx={{ minWidth: 'auto', p: 0, height: "30px", width: "30px", borderRadius: "1000px" }}
+                                onClick={() => header.column.toggleSorting()}
+                              >
+                                <GridArrowDownwardIcon sx={{ width: "16px", p: 0, color: "gray" }} />
+                              </Button> : ""
+                        }
                       </span>
                       <TableHeaderMenu header={header} />
                     </div>

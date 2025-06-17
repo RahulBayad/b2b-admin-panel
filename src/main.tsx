@@ -79,9 +79,9 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 5,
           fontWeight: 400,
-          padding: '8px 16px',
+          padding: '5px 16px',
           '&.MuiButton-contained': {
             backgroundColor: '#1976d2', // Blue background
             color: '#ffffff', // White text
