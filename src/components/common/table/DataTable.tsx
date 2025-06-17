@@ -28,7 +28,7 @@ type DataTableProps = {
   data: unknown[];
   columns: unknown[];
   selectable?: boolean;
-  FilterDialogContent?: JSX.Element;
+  FilterDialog?: JSX.Element;
   showToolbar?: boolean;
   enableFilter?: boolean;
   enableExport?: boolean;
@@ -41,7 +41,7 @@ export type TableColumnDef<T> = ColumnDef<T> & {
   width?: number;
 };
 
-export const DataTable = ({ data = [], columns, selectable = false, FilterDialogContent }: DataTableProps) => {
+export const DataTable = ({ data = [], columns, selectable = false, FilterDialog }: DataTableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({ left: [], right: [] });
@@ -73,12 +73,7 @@ export const DataTable = ({ data = [], columns, selectable = false, FilterDialog
 
   const TableToolbar = useCallback(() => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [isFilterOpen, setIsFilterOpen] = useState(false)
-    const openFilter = () => {
-      console.log("open")
-      setIsFilterOpen(true)
-    }
-    const closeFilter = () => setIsFilterOpen(false)
+    
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -93,7 +88,8 @@ export const DataTable = ({ data = [], columns, selectable = false, FilterDialog
         sx={{ border: "none", borderRadius: 0 }}
       >
         <OutlinedInput
-          startAdornment={<Search className='mr-0' size={18} />}
+          size="small"
+          startAdornment={<Search className='mr-2' size={14} />}
           sx={{
             fontSize: 14,
           }}
@@ -137,17 +133,10 @@ export const DataTable = ({ data = [], columns, selectable = false, FilterDialog
         <IconButton sx={{ p: 1.2 }}>
           <Printer size={18} />
         </IconButton>
-        <IconButton sx={{ p: 1.2 }} onClick={openFilter}>
-          <ListFilter size={18} />
-        </IconButton>
-        <Dialog open={isFilterOpen} onClose={closeFilter}>
-          <DialogContent>
-            <FilterDialogContent />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeFilter}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
+        {
+          FilterDialog && <FilterDialog />
+        }
+        
       </Paper>
     )
   }, [columns]);

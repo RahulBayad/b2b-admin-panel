@@ -123,11 +123,6 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          height: 35,
-          minHeight: 'auto',
-          borderRadius: '1000px',
-          fontSize: '0.875rem',
-          minWidth: '250px',
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#e0e0e0',
             borderRadius: '1000px',
@@ -140,9 +135,7 @@ const theme = createTheme({
             borderWidth: '2px',
           },
           '& .MuiOutlinedInput-input': {
-            height: '100%',
-            padding: '0px 6px',
-            boxSizing: 'border-box',
+            // height: '100%',  
             color: '#000000', // Black text for input
           },
         },

@@ -21,7 +21,7 @@ import {
 } from "@mui/x-charts";
 import { Link } from "react-router-dom";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import { DataTable } from "../../components/ui/DataTable";
+import { DataTable } from "../../components/common/table/DataTable";
 
 // Sample data
 const offerDemandData = [

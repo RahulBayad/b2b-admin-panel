@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
-import { DataTable } from '../ui/DataTable'
+import { DataTable } from './table/DataTable'
 import { Outlet } from 'react-router'
 import Header from './Header'
 import Sidebar from './Sidebar'
