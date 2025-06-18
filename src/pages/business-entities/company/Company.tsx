@@ -1,11 +1,10 @@
 import React, { useState, type JSX, type ReactElement } from 'react'
 import { DataTable, type TableColumnDef } from '../../../components/common/table/DataTable'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormHelperText, FormLabel, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
-import { useForm, type ReadFormState, type UseFormProps, type UseFormReturn } from "react-hook-form"
+import { Controller, useForm, type ReadFormState, type SubmitHandler, type UseFormProps, type UseFormReturn } from "react-hook-form"
 import FilterButton from '../../../components/common/table/FilterButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 
 type CompanyTable = {
   id?: string | number;
@@ -16,6 +15,7 @@ type CompanyTable = {
   email: string;
   mobile: string;
 }
+
 const companyTableData: CompanyTable[] = [
   {
     id: 1,
@@ -87,14 +87,47 @@ const FilterDialog: JSX.Element = () => {
   const filterSchema = z.object({
     businessType : z.string().optional(),
     status : z.string().optional(),
+    companyType : z.string().optional(),
+    continent : z.string().optional(),
+    country : z.string().optional(),
+    state : z.string().optional(),
+    city : z.string().optional(),
+    interested : z.string().optional(),
+    brand : z.string().optional(),
+    category : z.string().optional(),
+    kyc_verified : z.boolean().nullable().optional(),
+    enable_billing : z.boolean().nullable().optional(),
+    created_date : z.date().nullable().optional(),
   })
+  type FilterFormData = z.infer<typeof filterSchema>;
 
   const openFilter = () => setIsFilterOpen(true)
-  const closeFilter = () => setIsFilterOpen(false)
-  const { register , handleSubmit} = useForm<UseFormReturn>()
+  const closeFilter = () => {
+    setIsFilterOpen(false)
+    reset() 
+  }
+  const { control, handleSubmit, reset } = useForm<FilterFormData>({
+    resolver : zodResolver(filterSchema),
+    defaultValues : {
+      status : "",
+      businessType : "",
+      companyType : "",
+      continent : "",
+      country : "",
+      state : "",
+      city : "",
+      interested : "",
+      brand : "",
+      category : "",
+      kyc_verified : null,
+      enable_billing : null,
+      created_date : null,
+    }
+  })
 
-  const submitHandler = (data)=>{
+  const submitHandler: SubmitHandler<FilterFormData> = (data)=>{
     console.log("form data", data)
+    closeFilter()
   }
   return (
     <>
@@ -103,34 +136,246 @@ const FilterDialog: JSX.Element = () => {
         <DialogTitle sx={{ fontSize: 18 }}>Filter Company</DialogTitle>
         <Divider />
         <form onSubmit={handleSubmit(submitHandler)}>
-          <DialogContent sx={{ width: "400px" }}>
-            <div className='grid grid-cols-1 gap-5'>
-              <FormControl fullWidth>
-                <InputLabel size='small'>Business Type</InputLabel>
-                <Select
-                  label="Business Type"
-                  size='small'
-                  {...register('businessType')}
-                >
-                  <MenuItem value="Wholesale">Wholesale</MenuItem>
-                  <MenuItem value="Retail">Retail</MenuItem>
-                  <MenuItem value="Private Limited">Private Limited</MenuItem>
-                  <MenuItem value="Enterprise">Enterprise</MenuItem>
-                  <MenuItem value="B2B">B2B</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel size='small'>Status</InputLabel>
-                <Select
-                  label="Status"
-                  size='small'
-                  {...register('status')}
-                >
-                  <MenuItem value="Active">Active</MenuItem>
-                  <MenuItem value="Inactive">Inactive</MenuItem>
-                  <MenuItem value="Disabled">Disabled</MenuItem>
-                </Select>
-              </FormControl>
+          <DialogContent sx={{ width: "480px" }}>
+            <div className='grid grid-cols-2 gap-5'>
+              <Controller 
+                name='status'
+                control={control}
+                render={({field})=>(
+                  <FormControl>
+                    <InputLabel size='small'>Status</InputLabel>
+                    <Select
+                      label="Status"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Active">Active</MenuItem>
+                      <MenuItem value="Inactive">Inactive</MenuItem>
+                      <MenuItem value="Disabled">Disabled</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='businessType'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Business Type</InputLabel>
+                    <Select
+                      label="Business Type"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='companyType'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Company Type</InputLabel>
+                    <Select
+                      label="Company Type"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='continent'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Continent</InputLabel>
+                    <Select
+                      label="Continent"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='country'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Country</InputLabel>
+                    <Select
+                      label="Country"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='state'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>State</InputLabel>
+                    <Select
+                      label="State"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='city'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>City</InputLabel>
+                    <Select
+                      label="City"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='interested'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Interested In</InputLabel>
+                    <Select
+                      label="Interested In"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='brand'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Brand</InputLabel>
+                    <Select
+                      label="Brand"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='category'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Category</InputLabel>
+                    <Select
+                      label="Category"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='kyc_verified'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>KYC Verified</InputLabel>
+                    <Select
+                      label="KYC Verified"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+              <Controller 
+                name='enable_billing'
+                control={control}
+                render={({field})=>(
+                  <FormControl fullWidth>
+                    <InputLabel size='small'>Enable Billing</InputLabel>
+                    <Select
+                      label="Enable Billing"
+                      size='small'
+                      {...field}
+                    >
+                      <MenuItem value="Wholesale">Wholesale</MenuItem>
+                      <MenuItem value="Retail">Retail</MenuItem>
+                      <MenuItem value="Private Limited">Private Limited</MenuItem>
+                      <MenuItem value="Enterprise">Enterprise</MenuItem>
+                      <MenuItem value="B2B">B2B</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
             </div>
           </DialogContent>
           <DialogActions sx={{ py: 2, px: 3 }}>
