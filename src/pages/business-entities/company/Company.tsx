@@ -1,6 +1,6 @@
 import React, { useState, type JSX, type ReactElement } from 'react'
 import { DataTable, type TableColumnDef } from '../../../components/common/table/DataTable'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormHelperText, FormLabel, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormHelperText, FormLabel, IconButton, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
 import { Controller, useForm, type ReadFormState, type SubmitHandler, type UseFormProps, type UseFormReturn } from "react-hook-form"
 import FilterButton from '../../../components/common/table/FilterButton';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -85,18 +85,18 @@ const columns: TableColumnDef<CompanyTable>[] = [
 const FilterDialog: JSX.Element = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const filterSchema = z.object({
-    businessType : z.string().optional(),
-    status : z.string().optional(),
-    companyType : z.string().optional(),
-    continent : z.string().optional(),
-    country : z.string().optional(),
-    state : z.string().optional(),
-    city : z.string().optional(),
-    interested : z.string().optional(),
-    brand : z.string().optional(),
-    category : z.string().optional(),
-    kyc_verified : z.boolean().nullable().optional(),
-    enable_billing : z.boolean().nullable().optional(),
+    businessType : z.array(z.string()).nullable().optional(),
+    status : z.array(z.string()).optional(),
+    companyType : z.array(z.string()).optional(),
+    continent : z.array(z.string()).optional(),
+    country : z.array(z.string()).optional(),
+    state : z.array(z.string()).optional(),
+    city : z.array(z.string()).optional(),
+    interested : z.array(z.string()).optional(),
+    brand : z.array(z.string()).optional(),
+    category : z.array(z.string()).optional(),
+    kyc_verified : z.array(z.string()).optional(),
+    enable_billing : z.array(z.string()).optional(),
     created_date : z.date().nullable().optional(),
   })
   type FilterFormData = z.infer<typeof filterSchema>;
@@ -109,18 +109,18 @@ const FilterDialog: JSX.Element = () => {
   const { control, handleSubmit, reset } = useForm<FilterFormData>({
     resolver : zodResolver(filterSchema),
     defaultValues : {
-      status : "",
-      businessType : "",
-      companyType : "",
-      continent : "",
-      country : "",
-      state : "",
-      city : "",
-      interested : "",
-      brand : "",
-      category : "",
-      kyc_verified : null,
-      enable_billing : null,
+      status : [],
+      businessType : [],
+      companyType : [],
+      continent : [],
+      country : [],
+      state : [],
+      city : [],
+      interested : [],
+      brand : [],
+      category : [],
+      kyc_verified : [],
+      enable_billing : [],
       created_date : null,
     }
   })
@@ -132,12 +132,12 @@ const FilterDialog: JSX.Element = () => {
   return (
     <>
       <FilterButton onClick={openFilter} />
-      <Dialog open={isFilterOpen} onClose={closeFilter}>
+      <Dialog open={isFilterOpen} onClose={closeFilter} maxWidth="xl">
         <DialogTitle sx={{ fontSize: 18 }}>Filter Company</DialogTitle>
         <Divider />
         <form onSubmit={handleSubmit(submitHandler)}>
-          <DialogContent sx={{ width: "480px" }}>
-            <div className='grid grid-cols-2 gap-5'>
+          <DialogContent sx={{width: "800px"}}>
+            <div className='grid grid-cols-3 gap-4'>
               <Controller 
                 name='status'
                 control={control}
@@ -145,9 +145,11 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl>
                     <InputLabel size='small'>Status</InputLabel>
                     <Select
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                       label="Status"
                       size='small'
-                      {...field}
                     >
                       <MenuItem value="Active">Active</MenuItem>
                       <MenuItem value="Inactive">Inactive</MenuItem>
@@ -159,13 +161,16 @@ const FilterDialog: JSX.Element = () => {
               <Controller 
                 name='businessType'
                 control={control}
+                
                 render={({field})=>(
                   <FormControl fullWidth>
                     <InputLabel size='small'>Business Type</InputLabel>
                     <Select
+                      multiple
                       label="Business Type"
                       size='small'
-                      {...field}
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -185,7 +190,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Company Type"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -205,7 +212,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Continent"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -225,7 +234,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Country"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -245,7 +256,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="State"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -265,7 +278,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="City"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -285,7 +300,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Interested In"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -305,7 +322,9 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Brand"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
@@ -325,8 +344,11 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Category"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
+                      <MenuItem value="">None</MenuItem>
                       <MenuItem value="Wholesale">Wholesale</MenuItem>
                       <MenuItem value="Retail">Retail</MenuItem>
                       <MenuItem value="Private Limited">Private Limited</MenuItem>
@@ -345,13 +367,13 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="KYC Verified"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
-                      <MenuItem value="Wholesale">Wholesale</MenuItem>
-                      <MenuItem value="Retail">Retail</MenuItem>
-                      <MenuItem value="Private Limited">Private Limited</MenuItem>
-                      <MenuItem value="Enterprise">Enterprise</MenuItem>
-                      <MenuItem value="B2B">B2B</MenuItem>
+                      {/* <MenuItem value="">None</MenuItem> */}
+                      <MenuItem value="Yes">Yes</MenuItem>
+                      <MenuItem value="No">No</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -365,13 +387,13 @@ const FilterDialog: JSX.Element = () => {
                     <Select
                       label="Enable Billing"
                       size='small'
-                      {...field}
+                      multiple
+                      value={field.value || []}
+                      onChange={field.onChange}
                     >
-                      <MenuItem value="Wholesale">Wholesale</MenuItem>
-                      <MenuItem value="Retail">Retail</MenuItem>
-                      <MenuItem value="Private Limited">Private Limited</MenuItem>
-                      <MenuItem value="Enterprise">Enterprise</MenuItem>
-                      <MenuItem value="B2B">B2B</MenuItem>
+                      {/* <MenuItem value="">None</MenuItem> */}
+                      <MenuItem value="Yes">Yes</MenuItem>
+                      <MenuItem value="No">No</MenuItem>
                     </Select>
                   </FormControl>
                 )}
