@@ -220,7 +220,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#00041b] bg-white border-r border-gray-200 text-sm min-w-[220px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
+    <div className=" bg-white border-r border-gray-200 text-sm min-w-[220px] h-full overflow-y-auto overflow-x-hidden shadow-xl">
       <figure className="px-3 py-2">
         <img src="/vite.svg" className="w-full h-16" />
       </figure>
