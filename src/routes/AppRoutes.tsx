@@ -6,6 +6,7 @@ import ProtectedRoutes from './ProtectedRoutes'
 const Dashboard = lazy(()=> import('../pages/dashboard/Dashboard'));
 
 const Company = lazy(()=> import('../pages/business-entities/company/Company'));
+const CompanyForm = lazy(()=> import('../pages/business-entities/company/CompanyForm'));
 const Members = lazy(()=> import('../pages/business-entities/members/Members'));
 const AllDocument = lazy(()=> import('../pages/business-entities/all-document/AllDocument'));
 const Inquiries = lazy(()=> import('../pages/business-entities/inquiries/Inquiries'));
@@ -77,6 +78,7 @@ const AppRoutes = () => {
                     path: "/business-entities",
                     children : [
                         { path: "companies", element: <Company/> },
+                        { path: "companies/create", element : <CompanyForm/> },
                         { path: "members", element: <Members/> },
                         { path: "partners", element: <Partner/> },
                         { path: "inquiries", element: <Inquiries/> },

@@ -5,6 +5,7 @@ import { Controller, useForm, type ReadFormState, type SubmitHandler, type UseFo
 import FilterButton from '../../../components/common/table/FilterButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Link } from 'react-router';
 
 type CompanyTable = {
   id?: string | number;
@@ -83,7 +84,7 @@ const columns: TableColumnDef<CompanyTable>[] = [
 ]
 
 const FilterDialog: JSX.Element = () => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
   const filterSchema = z.object({
     businessType : z.array(z.string()).nullable().optional(),
     status : z.array(z.string()).optional(),
@@ -99,14 +100,14 @@ const FilterDialog: JSX.Element = () => {
     enable_billing : z.array(z.string()).optional(),
     created_date : z.date().nullable().optional(),
   })
-  type FilterFormData = z.infer<typeof filterSchema>;
+  type FilterFormSchema = z.infer<typeof filterSchema>;
 
   const openFilter = () => setIsFilterOpen(true)
   const closeFilter = () => {
     setIsFilterOpen(false)
     reset() 
   }
-  const { control, handleSubmit, reset } = useForm<FilterFormData>({
+  const { control, handleSubmit, reset } = useForm<FilterFormSchema>({
     resolver : zodResolver(filterSchema),
     defaultValues : {
       status : [],
@@ -125,7 +126,7 @@ const FilterDialog: JSX.Element = () => {
     }
   })
 
-  const submitHandler: SubmitHandler<FilterFormData> = (data)=>{
+  const submitHandler: SubmitHandler<FilterFormSchema> = (data)=>{
     console.log("form data", data)
     closeFilter()
   }
@@ -416,7 +417,7 @@ const Company = () => {
     <React.Fragment>
       <div className='flex justify-between items-center mb-2'>
         <Typography fontSize={18} fontWeight={500}>Company</Typography>
-        <Button variant='contained' size='small'>Add New</Button>
+        <Button variant='contained' size='small'><Link to={"/business-entities/companies/create"}>Add New</Link></Button>
       </div>
       <DataTable
         columns={columns}

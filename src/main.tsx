@@ -125,7 +125,7 @@ const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#e0e0e0',
-            borderRadius: '1000px',
+            // borderRadius: '1000px',
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: '#1976d2',

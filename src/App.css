@@ -8,6 +8,10 @@
     100% { width : 50%}
 }
 
+.MuiFormLabel-asterisk{
+    /* color: red */
+}
+
 table { 
     width : 100%;
     font-size: 13px;
