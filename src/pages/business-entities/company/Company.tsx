@@ -101,7 +101,7 @@ const FilterDialog: JSX.Element = () => {
     created_date : z.date().nullable().optional(),
   })
   type FilterFormSchema = z.infer<typeof filterSchema>;
-
+  
   const openFilter = () => setIsFilterOpen(true)
   const closeFilter = () => {
     setIsFilterOpen(false)
@@ -137,8 +137,8 @@ const FilterDialog: JSX.Element = () => {
         <DialogTitle sx={{ fontSize: 18 }}>Filter Company</DialogTitle>
         <Divider />
         <form onSubmit={handleSubmit(submitHandler)}>
-          <DialogContent sx={{width: "800px"}}>
-            <div className='grid grid-cols-3 gap-4'>
+          <DialogContent sx={{width: "600px"}}>
+            <div className='grid grid-cols-2 gap-4'>
               <Controller 
                 name='status'
                 control={control}
@@ -147,6 +147,7 @@ const FilterDialog: JSX.Element = () => {
                     <InputLabel size='small'>Status</InputLabel>
                     <Select
                       multiple
+                      // variant='standard'
                       value={field.value || []}
                       onChange={field.onChange}
                       label="Status"
@@ -168,6 +169,7 @@ const FilterDialog: JSX.Element = () => {
                     <InputLabel size='small'>Business Type</InputLabel>
                     <Select
                       multiple
+                      //  variant='standard'
                       label="Business Type"
                       size='small'
                       value={field.value || []}
@@ -190,6 +192,7 @@ const FilterDialog: JSX.Element = () => {
                     <InputLabel size='small'>Company Type</InputLabel>
                     <Select
                       label="Company Type"
+                      //  variant='standard'
                       size='small'
                       multiple
                       value={field.value || []}
@@ -211,6 +214,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Continent</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Continent"
                       size='small'
                       multiple
@@ -233,6 +237,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Country</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Country"
                       size='small'
                       multiple
@@ -255,6 +260,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>State</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="State"
                       size='small'
                       multiple
@@ -277,6 +283,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>City</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="City"
                       size='small'
                       multiple
@@ -299,6 +306,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Interested In</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Interested In"
                       size='small'
                       multiple
@@ -321,6 +329,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Brand</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Brand"
                       size='small'
                       multiple
@@ -343,6 +352,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Category</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Category"
                       size='small'
                       multiple
@@ -366,6 +376,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>KYC Verified</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="KYC Verified"
                       size='small'
                       multiple
@@ -386,6 +397,7 @@ const FilterDialog: JSX.Element = () => {
                   <FormControl fullWidth>
                     <InputLabel size='small'>Enable Billing</InputLabel>
                     <Select
+                    //  variant='standard'
                       label="Enable Billing"
                       size='small'
                       multiple
