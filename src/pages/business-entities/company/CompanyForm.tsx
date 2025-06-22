@@ -27,14 +27,17 @@ const CompanyForm = () => {
     ownership: z.string().trim().optional(),
     owner: z.string().trim().optional(),
     establishment_year: z.number().optional(),
-    employees: z.string().trim().optional(),
     company_type: z.string().trim().optional(),
     company_website: z.string().trim().optional(),
     company_logo_brochure: z.string().trim().optional(),
     status: z
       .string({ required_error: "Please choose a status" })
       .min(1, { message: "Status is required" }),
-
+    country: z.string().trim().optional(),
+    state: z.string().trim().optional(),
+    city: z.string().trim().optional(),
+    zip_postal_code: z.number().optional(),
+    address: z.string().trim().optional(),
     primary_contact_number: z
       .number({ required_error: "Primary Contact Number is Required" })
       .optional(),
@@ -50,11 +53,7 @@ const CompanyForm = () => {
     alternate_email: z.string().trim().optional(),
     notification_email: z.string().trim().optional(),
 
-    country: z.string().trim().optional(),
-    state: z.string().trim().optional(),
-    city: z.string().trim().optional(),
-    zip_postal_code: z.number().optional(),
-    address: z.string().trim().optional(),
+    
 
     gst_number: z.string().trim().optional(),
     pan_number: z.string().trim().optional(),
@@ -71,7 +70,7 @@ const CompanyForm = () => {
     declaration_194q: z.string().trim().optional(),
     declaration_206ab: z.string().trim().optional(),
     authority_letter: z.string().trim().optional(),
-    aadhar_card: z.string().trim().optional(),
+    aadhar_card: z.string().trim().optional(),  
     cancel_cheque: z.string().trim().optional(),
     visiting_card: z.string().trim().optional(),
     office_photo: z.string().trim().optional(),
@@ -106,7 +105,7 @@ const CompanyForm = () => {
       <Paper sx={{ p: 2, mt: 2 }}>
         <form onSubmit={handleSubmit(submitHandler)} className="">
           <div >
-            <Typography variant="h6" sx={{fontSize: "1rem", mt:2 , mb:1}} >Primary Information</Typography>
+            <Typography variant="h6" sx={{fontSize: "1.2rem", mb:1.5, mt:1}} >Primary Information</Typography>
             <div className="grid grid-cols-3 gap-4 ">
               <FormControl fullWidth>
                 <Controller
@@ -204,17 +203,86 @@ const CompanyForm = () => {
               </FormControl>
               <FormControl fullWidth>
                 <Controller
-                  name="employees"
+                  name="country"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      type="text"
+                      size="small"
+                      label="Country"
+                      {...field}
+                      error={!!errors?.country}
+                      helperText={errors?.country?.message}
+                    />
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  name="state"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      type="text"
+                      size="small"
+                      label="State"
+                      {...field}
+                      error={!!errors?.state}
+                      helperText={errors?.state?.message}
+                    />
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  name="city"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      type="text"
+                      size="small"
+                      label="City"
+                      {...field}
+                      error={!!errors?.city}
+                      helperText={errors?.city?.message}
+                    />
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  name="zip_postal_code"
                   control={control}
                   render={({ field }) => (
                     <TextField
                       variant="outlined"
                       type="number"
                       size="small"
-                      label="Employees"
+                      label="Zip/Postal Code"
                       {...field}
-                      error={!!errors?.employees}
-                      helperText={errors?.employees?.message}
+                      error={!!errors?.zip_postal_code}
+                      helperText={errors?.zip_postal_code?.message}
+                    />
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      type="text"
+                      size="small"
+                      label="Address"
+                      multiline
+                      {...field}
+                      error={!!errors?.address}
+                      helperText={errors?.address?.message}
                     />
                   )}
                 />
@@ -222,7 +290,7 @@ const CompanyForm = () => {
             </div>
             <br />
 
-            <Typography variant="h6" sx={{fontSize: "1rem", mt:2 , mb:1}} >Contact Information</Typography>
+            <Typography variant="h6" sx={{fontSize: "1.2rem", mb:1.5, mt:1}} >Contact Information</Typography>
             <div className="grid grid-cols-3 gap-4 ">
               <FormControl fullWidth>
                 <Controller
@@ -312,98 +380,7 @@ const CompanyForm = () => {
             </div>
             <br />
 
-            <Typography variant="h6" sx={{fontSize: "1rem", mt:2 , mb:1}} >Address</Typography>
-            <div className="grid grid-cols-3 gap-4 ">
-              <FormControl fullWidth>
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      type="text"
-                      size="small"
-                      label="Country"
-                      {...field}
-                      error={!!errors?.country}
-                      helperText={errors?.country?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <Controller
-                  name="state"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      type="text"
-                      size="small"
-                      label="State"
-                      {...field}
-                      error={!!errors?.state}
-                      helperText={errors?.state?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <Controller
-                  name="city"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      type="text"
-                      size="small"
-                      label="City"
-                      {...field}
-                      error={!!errors?.city}
-                      helperText={errors?.city?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <Controller
-                  name="zip_postal_code"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      type="number"
-                      size="small"
-                      label="Zip/Postal Code"
-                      {...field}
-                      error={!!errors?.zip_postal_code}
-                      helperText={errors?.zip_postal_code?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <Controller
-                  name="address"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      type="text"
-                      size="small"
-                      label="Address"
-                      multiline
-                      {...field}
-                      error={!!errors?.address}
-                      helperText={errors?.address?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-            </div>
-            <br />
-
-            <Typography variant="h6" sx={{fontSize: "1rem", mt:2 , mb:1}} >Business Details</Typography>
+            <Typography variant="h6" sx={{fontSize: "1.2rem", mb:1.5, mt:1}} >Business Details</Typography>
             <div className="grid grid-cols-3 gap-4 ">
               <FormControl fullWidth>
                 <Controller
